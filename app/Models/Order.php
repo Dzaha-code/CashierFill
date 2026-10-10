@@ -14,12 +14,31 @@ class Order extends Model
     protected $fillable = [
         'customer_id',
         'order_date',
-        'status',
         'total_price',
         'discount',
         'discount_amount',
         'total_payment',
+        'status',
+        'payment_method',
+        'payment_status',
     ];
+
+    protected $attributes = [
+        'order_date' => null,
+    ];
+
+    protected $casts = [
+        'order_date' => 'date',
+    ];
+
+    protected static function booted(): void
+    {
+        static::creating(function (Order $order) {
+            if (empty($order->order_date)) {
+                $order->order_date = now()->toDateString();
+            }
+        });
+    }
     public function orderdetail()
     {
         return $this->hasMany(OrderDetail::class, 'order_id');

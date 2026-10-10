@@ -11,13 +11,29 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-user-circle';
+    protected static ?string $activeNavigationIcon = 'heroicon-s-user-circle';
+    protected static ?string $navigationGroup = "User Management";
+    protected static ?int $navigationSort = 6 ;
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['name', 'email'];
+    }
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        return [
+            'Name' => $record->name ?? 'N/A',
+            'Email' => $record->email ?? 'N/A',
+        ];
+    }
 
     public static function form(Form $form): Form
     {

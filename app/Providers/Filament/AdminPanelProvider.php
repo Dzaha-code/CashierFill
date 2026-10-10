@@ -26,6 +26,8 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->path('admin')
             ->login()
+            ->sidebarCollapsibleOnDesktop()
+            ->databaseNotifications()
             ->brandLogo(fn () => asset('image/hitam.png.png'))
             ->darkModeBrandLogo(fn () => asset('image/putih.png.png'))
             ->brandLogoHeight('50px')

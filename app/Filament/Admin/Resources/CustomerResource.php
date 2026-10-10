@@ -11,6 +11,7 @@ use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class CustomerResource extends Resource
@@ -18,6 +19,32 @@ class CustomerResource extends Resource
     protected static ?string $model = Customer::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
+    protected static ?string $activeNavigationIcopn = 'heroicon-s-user-group';
+    protected static ?string $navigationGroup = "User Management";
+    protected static ?int $navigationSort = 5 ;
+
+    public static function getNavigationBadge() : ?string
+{
+    return static::getModel()::count();
+}
+public static function getGloballySearchableAttributes(): array
+{
+    return ['name', 'phone','address'];
+}
+public static function getGlobalSearchResultDetails(Model $record): array
+{
+    return [
+        'Name' => $record->name  ?? 'N/A',
+        'Phone'  => $record->phone  ?? 'N/A',
+        'Address' => $record->address ?? 'N/A',
+    ];
+}
+
+public static function getNavigationBadgeTooltip(): ?string
+{
+    return 'The number of customer';
+}
+
 
     public static function form(Form $form): Form
     {
@@ -35,7 +62,6 @@ class CustomerResource extends Resource
                     ->maxLength(255),
             ]);
     }
-
     public static function table(Table $table): Table
     {
         return $table
